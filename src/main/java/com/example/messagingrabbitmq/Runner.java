@@ -22,10 +22,12 @@ public class Runner implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
+
 			System.out.println("Enter message:");
-			String message = scanner.next();
+			String message = scanner.nextLine();
 			rabbitTemplate.convertAndSend(MessagingRabbitmqApplication.fanoutExchangeName,"",  message);
 			receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
+			receiver.updateLatch();
 		}
 	}
 
